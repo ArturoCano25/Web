@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champions League</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0px;
+            margin: 0px;
+        }
+    .grid-contenedor{
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        grid-template-rows: 70px auto ;
+        grid-template-areas: "Encabezado Encabezado Encabezado"
+                              "Barra Contenido PiePagina";
+
+    }
+
+    .uno{
+        display: flex;
+        justify-content: space-between; /* Coloca las imágenes a los extremos */
+        align-items: center; 
+        border: black  solid;
+        background-color: black; 
+        grid-area:  Encabezado; 
+        color: white solid;  
+    }
+
+    .dos{
+        border: black  solid;
+        background-color: rgb(74, 149, 247);
+        grid-area: Barra;
+        flex-direction: column;
+        display: flex;
+        flex-wrap: wrap; /* Permite que las cajas se acomoden en varias filas si no caben en una */
+        justify-content: space-between; /* Espacio entre las cajas */
+        align-items: center;
+        padding: 20px;
+    }
+
+    .caja-campeon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; /* Ajustamos el tamaño de las cajas */
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 2px solid black; /* Borde para diferenciar cada caja */
+            background-color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .caja-campeon img {
+            width: 50px; /* Ajusta el tamaño del logo */
+            height: auto;
+            margin-right: 15px; /* Espacio entre el logo y el texto */
+        }
+
+        .caja-campeon h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: black;
+        }
+
+        .caja-campeon p {
+            font-size: 14px;
+            color: gray;
+        }
+
+    .tres{
+        
+        border: black  solid;
+        background-color: white;
+        grid-area: Contenido;
+        text-align: center;
+        height: auto;
+        overflow: auto;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .cuatro{
+        border: black solid;
+        background-color: rgb(209, 45, 242);
+        grid-area: PiePagina;
+    }
+
+    #img1,#img2 {
+        width: auto; /* Ajusta el tamaño automáticamente */
+  height: 100%;
+    }
+   
+
+    .ImagenesTexto{
+        width: 100%;
+        height: auto; 
+    }
+
+    .Texto{
+        margin: 0px;
+        padding: 30px;
+        text-align: justify;
+    }
+
+</style>
+</head>
+
+
+<body>
+<div class="grid-contenedor">
+    <div class="uno">
+        <img id="img1" src="Imagenes/UEFALOGO.png" alt="Logo">
+        
+        <img id="img2" src="Imagenes/COPAUEFA.jpg" alt="COPAUEFA">
+    </div>
+    <div class="dos">
+        <p><h2>Ultimos Campeones</h2></p>
+        <div class="caja-campeon">
+            <img src="Imagenes/RealMadrid.png" alt="Logo Real Madrid">
+            <h4>2024</h4>
+            <p>Real Madrid</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/ManchesterCity.png" alt="Logo Manchester City">
+            <h4>2023</h4>
+            <p>Manchester City</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/RealMadrid.png" alt="Logo Real Madrid">
+            <h4>2022</h4>
+            <p>Real Madrid</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/Chelsea.png" alt="Logo Chelsea">
+            <h4>2021</h4>
+            <p>Chelsea</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/BayernMunich.png" alt="Logo Bayern Múnich">
+            <h4>2020</h4>
+            <p>Bayern Múnich</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/Liverpool.png" alt="Logo Liverpool">
+            <h4>2019</h4>
+            <p>Liverpool</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/RealMadrid.png" alt="Logo Real Madrid">
+            <h4>2018</h4>
+            <p>Real Madrid</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/RealMadrid.png" alt="Logo Real Madrid">
+            <h4>2017</h4>
+            <p>Real Madrid</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/RealMadrid.png" alt="Logo Real Madrid">
+            <h4>2016</h4>
+            <p>Real Madrid</p>
+        </div>
+        <div class="caja-campeon">
+            <img src="Imagenes/Barcelona.png" alt="Logo Barcelona">
+            <h4>2015</h4>
+            <p>Barcelona</p>
+        </div>
+    </div>
+    <div class="tres">
+        <h1>UEFA Champions League</h1>
+        <p> Es una competicion de futbol que reune a los mejores equipos de europa </p>
+        <p class="Texto">La UEFA Champions League es el torneo de clubes más prestigioso del fútbol europeo, donde las mejores escuadras del continente se enfrentan en una emocionante competición para coronarse como los reyes de Europa. Desde su inicio en 1955, esta competencia ha cautivado a millones de aficionados alrededor del mundo, brindando momentos épicos, goles inolvidables y rivalidades legendarias.</p>
+        <img class="ImagenesTexto" src="Imagenes/COPA.jpg" alt="CopaChampions">
+        <p class="Texto">Cada temporada, los equipos más históricos, desde el FC Barcelona y el Real Madrid hasta el Manchester City y el Bayern Múnich, luchan por alcanzar la gloria eterna. Jugadores icónicos como Lionel Messi, Cristiano Ronaldo y muchos otros han dejado su huella en este torneo, forjando su legado en noches mágicas.</p>
+        <img class="ImagenesTexto" src="Imagenes/JUGADORES.jpg" alt="Jugadores">
+        <p class="Texto">No te pierdas ni un solo partido de la acción de la UEFA Champions League. Vive la pasión, el drama y la emoción que solo el fútbol de élite puede ofrecer. ¡Siente la intensidad desde la fase de grupos hasta la gran final!</p>
+
+    </div>
+    <div class="cuatro">
+
+    </div>
+
+</div>
+    
+</body>
+</html>
