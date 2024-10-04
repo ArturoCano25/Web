@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         * {
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, td {
+            border: 2px solid pink;
+        }
+
+        thead {
+            background-color: #ffb6c1;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Estilo para pantallas pequeñas */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none; /* Ocultamos el encabezado */
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border-bottom: 2px solid #ffb6c1;
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding-left: 40%;
+                position: relative;
+                border: none;
+                border-bottom: 1px solid #f1f1f1;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 40%;
+                padding-left: 10px;
+                font-weight: bold;
+                background-color: #ffb6c1;
+                color: white;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        /* Estilo para pantallas grandes */
+        @media (min-width: 769px) {
+            table {
+                display: table;
+            }
+
+            thead {
+                display: table-header-group; /* Mostrar el encabezado */
+            }
+
+            tr {
+                display: table-row;
+            }
+
+            td {
+                display: table-cell;
+                border: 2px solid pink;
+                text-align: center;
+            }
+
+            td:before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <td>Materia</td>
+                <td>Lunes</td>
+                <td>Martes</td>
+                <td>Miercoles</td>
+                <td>Jueves</td>
+                <td>Viernes</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Materia">Web</td>
+                <td data-label="Lunes">7-8</td>
+                <td data-label="Martes">7-8</td>
+                <td data-label="Miércoles">7-8</td>
+                <td data-label="Jueves">7-8</td>
+                <td data-label="Viernes">7-8</td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Taller Base de Datos</td>
+                <td data-label="Lunes">8-10</td>
+                <td data-label="Martes"></td>
+                <td data-label="Miércoles"></td>
+                <td data-label="Jueves">8-10</td>
+                <td data-label="Viernes"></td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Sistemas Operativos</td>
+                <td data-label="Lunes"></td>
+                <td data-label="Martes"></td>
+                <td data-label="Miércoles">8-10</td>
+                <td data-label="Jueves"></td>
+                <td data-label="Viernes">8-10</td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Arquitectura de Computadoras</td>
+                <td data-label="Lunes">11-13</td>
+                <td data-label="Martes"></td>
+                <td data-label="Miércoles">11-12</td>
+                <td data-label="Jueves"></td>
+                <td data-label="Viernes">11-13</td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Telecomunicación</td>
+                <td data-label="Lunes"></td>
+                <td data-label="Martes">11-13</td>
+                <td data-label="Miércoles">11-12</td>
+                <td data-label="Jueves">11-12</td>
+                <td data-label="Viernes"></td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Ingeniería en Software</td>
+                <td data-label="Lunes">13-14</td>
+                <td data-label="Martes">13-14</td>
+                <td data-label="Miércoles">13-14</td>
+                <td data-label="Jueves">13-14</td>
+                <td data-label="Viernes">13-14</td>
+            </tr>
+            <tr>
+                <td data-label="Materia">Graficación</td>
+                <td data-label="Lunes">14-15</td>
+                <td data-label="Martes">14-15</td>
+                <td data-label="Miércoles">14-15</td>
+                <td data-label="Jueves">14-15</td>
+                <td data-label="Viernes"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
