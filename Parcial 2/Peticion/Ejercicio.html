@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptocurrency Data</title>
     <style>
-       body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; color: #333; }
-        #btnFetch, #btnFetchAsync, #btnFetchXHR { background-color: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; margin: 5px; }
-        #btnFetch:hover, #btnFetchAsync:hover, #btnFetchXHR:hover { background-color: #0056b3; }
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; color: #333; }
+        #btnFetch, #btnFetchAsync, #btnFetchXHR, #btnFetchJQ { background-color: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; margin: 5px; }
+        #btnFetch:hover, #btnFetchAsync:hover, #btnFetchXHR:hover, #btnFetchJQ:hover { background-color: #0056b3; }
         #result { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
         .coin { background-color: #fff; border: 1px solid #ddd; border-radius: 10px; width: 200px; padding: 15px; margin: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
         .coin h2 { font-size: 1.2em; margin: 10px 0; }
@@ -16,14 +16,18 @@
 <body>
 
     <h1>Cryptocurrency Market Data</h1>
-    <button id="btnFetch">Fetch Cryptocurrencies</button>
-    <button id="btnFetchAsync">Fetch Cryptocurrencies (Async/Await)</button>
-    <button id="btnFetchXHR">Fetch Cryptocurrencies (XHR)</button>
+    <button id="btnFetch">Fetch with Promises</button>
+    <button id="btnFetchAsync">Fetch with Async/Await</button>
+    <button id="btnFetchXHR">Fetch with XMLHttpRequest</button>
+    <button id="btnFetchJQ">Fetch with jQuery</button>
     <div id="result"></div>
 
+    <!-- Cargar jQuery desde CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Función con fetch y Promesas
         document.getElementById('btnFetch').addEventListener('click', () => {
-            fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd') // API de CoinGecko
+            fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
                 .then(response => response.json())
                 .then(data => {
                     const resultDiv = document.getElementById('result');
@@ -42,10 +46,10 @@
                 .catch(error => console.error('Error:', error));
         });
 
-        // Función con Async/Await
+        // Función con fetch y Async/Await
         document.getElementById('btnFetchAsync').addEventListener('click', async () => {
             try {
-                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd'); // API de CoinGecko
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd');
                 const data = await response.json();
                 const resultDiv = document.getElementById('result');
                 resultDiv.innerHTML = ""; // Limpiar contenido previo
@@ -91,6 +95,26 @@
                 console.error('Error de conexión XHR:', xhr.statusText);
             };
             xhr.send();
+        });
+
+        // Función con jQuery
+        $('#btnFetchJQ').click(function() {
+            $.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd', function(data) {
+                const resultDiv = $('#result');
+                resultDiv.empty(); // Limpiar contenido previo
+                data.forEach(coin => {
+                    const coinDiv = $(`
+                        <div class="coin">
+                            <h2>${coin.name} (${coin.symbol.toUpperCase()})</h2>
+                            <p>Price: $${coin.current_price.toFixed(2)}</p>
+                            <p>Market Cap: $${coin.market_cap.toLocaleString()}</p>
+                        </div>
+                    `);
+                    resultDiv.append(coinDiv);
+                });
+            }).fail(function(error) {
+                console.error("Error:", error);
+            });
         });
     </script>
 </body>
