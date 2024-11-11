@@ -9,11 +9,13 @@ app.get('/administrativos', (req, res) => {
 })
 
 app.get('/maestros', (req, res) => {
+    //localhost:8001/maestros
     console.log(req.body);
-    res.send('Servidor contestado a peticion get');
+    res.send('Servidor contestado a peticion body');
 })
 
 app.get('/estudiantes/:carrera', (req, res) => {
+    //localhost:8001/estudiantes/sistemas?control=22100171
     console.log(req.params.carrera);
     console.log(req.query.control);
     res.send('Servidor contestado a peticion get');
@@ -27,6 +29,6 @@ app.get('/estudiantes/:carrera', (req, res) => {
 //     res.send('Ruta no encontrada')
 // })
 
-app.listen(8000, () => {
-    console.log('Servidor express escuchado en puerto 8000');
+app.listen(8001, () => {
+    console.log('Servidor express escuchado en puerto 8001');
 })
