@@ -4,6 +4,7 @@ app.use(express.json());
 app.use(express.text());
 
 app.get('/administrativos', (req, res) => {
+    //localhost:8100/administrativos?control=22100235
     console.log(req.query);
     res.send('Servidor contestado a peticion get');
 })
