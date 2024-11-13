@@ -7,7 +7,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.post('/formulario',(req,res)=>{
     console.log(req.body)
-    res.render(`Hola ${req.body.nombre}`);
+    res.send(`Hola ${req.body.nombre}`);
 });
 
 app.listen(8100,()=>{
