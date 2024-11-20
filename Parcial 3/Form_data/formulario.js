@@ -4,6 +4,7 @@ const multer = require('multer');
 const cors = require('cors');
 const {jsPDF} = require('jspdf');
 const fs = require('fs');
+const { check, validationResult } = require('express-validator');
 const app = express();
 
 const storage = multer.diskStorage({
@@ -26,32 +27,46 @@ app.use(cors());
 // const folder = path.join(__dirname + '/archivos/');
 // const upload = multer({dest:folder});
 
-app.post('/formulario', upload.single('archivos'), (req, res) => {
-    const { nombre, apellido } = req.body;
-    const archivo = req.file;
+app.post(
+    '/formulario',
+    upload.single('archivos'),
+    [
+        check('nombre').notEmpty().withMessage('El nombre es obligatorio').isAlpha().withMessage('El nombre debe contener solo letras'),
+        check('apellido').notEmpty().withMessage('El apellido es obligatorio').isAlpha().withMessage('El apellido debe contener solo letras'),
+    ],
+    (req, res) => {
+        const errors = validationResult(req);
 
-    if (!nombre || !apellido || !archivo) {
-        return res.status(400).send('Todos los campos son obligatorios y se necesita un archivo.');
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { nombre, apellido } = req.body;
+        const archivo = req.file;
+
+        if (!archivo) {
+            return res.status(400).send('Es obligatorio subir un archivo.');
+        }
+
+        const imagePath = archivo.path;
+        const imageData = fs.readFileSync(imagePath);
+        const imageBase64 = imageData.toString('base64');
+        const imageExtension = path.extname(imagePath).slice(1);
+
+        const doc = new jsPDF();
+        doc.text(`Hola ${nombre} ${apellido}`, 10, 10);
+
+        const imageFormat = imageExtension === 'jpg' ? 'JPEG' : 'PNG';
+        doc.addImage(`data:image/${imageFormat};base64,${imageBase64}`, imageFormat, 10, 20, 100, 100);
+
+        const pdfBuffer = doc.output('arraybuffer');
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="documento.pdf"');
+
+        res.send(Buffer.from(pdfBuffer));
     }
-
-    const imagePath = archivo.path;
-    const imageData = fs.readFileSync(imagePath);
-    const imageBase64 = imageData.toString('base64');
-    const imageExtension = path.extname(imagePath).slice(1);
-
-    const doc = new jsPDF();
-    doc.text(`Hola ${nombre} ${apellido}`, 10, 10);
-
-    const imageFormat = imageExtension === 'jpg' ? 'JPEG' : 'PNG';
-    doc.addImage(`data:image/${imageFormat};base64,${imageBase64}`, imageFormat, 10, 20, 100, 100);
-
-    const pdfBuffer = doc.output('arraybuffer');
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="documento.pdf"');
-
-    res.send(Buffer.from(pdfBuffer));
-});
+);
 
 app.listen(8100,()=>{
     console.log(`Escuchando en el puerto : ${8100}`)
