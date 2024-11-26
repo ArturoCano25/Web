@@ -6,6 +6,38 @@ const {jsPDF} = require('jspdf');
 const fs = require('fs');
 const { check, validationResult } = require('express-validator');
 const app = express();
+const mysql = require('mysql2');
+
+app.use(cors());
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Kanoomtz02',
+    database: 'eventos_db'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Error conectando a la base de datos:', err.message);
+        return;
+    }
+    console.log('Conectado a la base de datos.');
+});
+
+app.get('/eventosAll', (req, res) => {
+    const query = 'SELECT id, nombre, descripcion, fecha, lugar FROM eventos';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error ejecutando la consulta:', err.message);
+            res.status(500).send('Error al obtener los datos.');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -26,6 +58,10 @@ app.use(cors());
 
 // const folder = path.join(__dirname + '/archivos/');
 // const upload = multer({dest:folder});
+
+const port = process.env.PORT || 8100;
+
+
 
 app.post(
     '/formulario',
