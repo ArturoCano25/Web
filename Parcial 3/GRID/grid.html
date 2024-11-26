@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css"
+        rel="stylesheet"
+    />
+</head>
+<body>
+    <div id="wrapper"></div>
+    <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+    <script>
+        const grid = new gridjs.Grid({
+    columns: ['ID', 'Nombre', 'Descripción', 'Fecha', 'Lugar'],
+    server: {
+        url: 'http://localhost:8200/eventosAll',
+        then: data =>
+            data.map(evento => [
+                evento.id,         
+                evento.nombre,
+                evento.descripcion,
+                evento.fecha,
+                evento.lugar,
+            ]),
+    },
+    pagination: true,
+    search: true,
+    sort: true,
+});
+
+grid.render(document.getElementById('wrapper'));
+
+    </script>
+</body>
+</html>
