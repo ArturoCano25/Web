@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liga MX</title>
+  <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h1>Equipos Liga MX</h1>
+
+  <div class="search-container">
+  <label for="searchId">Buscar por ID:</label>
+  <input type="number" id="buscarId" placeholder="Ingrese el ID del equipo" />
+  <button onclick="BuscarEquipo()">Buscar</button>
+  <button onclick="EditarEquipo()">Editar</button>
+  <button onclick="EliminarEquipo()">Eliminar</button>
+  </div>
+
+  <form id="equipo-form">
+    <input type="hidden" id="id_equipo" />
+    <label>Nombre del Equipo:</label>
+    <input type="text" id="nombre_equipo" required />
+    <label>Ciudad:</label>
+    <input type="text" id="ciudad" required />
+    <label>Fundación:</label>
+    <input type="number" id="fundacion" required />
+    <label>Colores:</label>
+    <input type="text" id="colores" />
+    <label>Estadio:</label>
+    <input type="text" id="estadio" />
+    <label>Títulos:</label>
+    <input type="number" id="titulos" />
+    <button type="submit">Guardar</button>
+    <button type="button" id="limpiar-btn">Limpiar Campos</button>
+  </form>
+
+  <div id="wrapper"></div>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/equipos';
+
+    document.getElementById('limpiar-btn').addEventListener('click', () => {
+      document.getElementById('equipo-form').reset();
+    });
+
+    // Busqueda
+    const BuscarEquipo = async () => {
+      const id = document.getElementById('buscarId').value;
+      if (!id) {
+        alert('Por favor ingresa un ID');
+        return;
+      }
+
+      const response = await fetch(`${apiUrl}/${id}`);
+      const equipo = await response.json();
+
+      if (equipo) {
+        alert(`Equipo encontrado: \nId: ${equipo.id_equipo} \n Nombre: ${equipo.nombre_equipo}\n Ciudad: ${equipo.ciudad}\n Ano fundacion: ${equipo.fundacion}\n Colores: ${equipo.colores}\n Estadio: ${equipo.estadio} \n Titulos: ${equipo.titulos}`);
+        console.log(equipo);
+      } else {
+        alert('Equipo no encontrado');
+      }
+    };
+
+    // Editar
+    const EditarEquipo = async () => {
+      const id = document.getElementById('buscarId').value;
+      if (!id) {
+        alert('Por favor ingresa un ID para editar');
+        return;
+      }
+
+      const equipo = await fetch(`${apiUrl}/${id}`).then(res => res.json());
+
+      if (equipo) {
+        document.getElementById('id_equipo').value = equipo.id_equipo;
+        document.getElementById('nombre_equipo').value = equipo.nombre_equipo;
+        document.getElementById('ciudad').value = equipo.ciudad;
+        document.getElementById('fundacion').value = equipo.fundacion;
+        document.getElementById('colores').value = equipo.colores;
+        document.getElementById('estadio').value = equipo.estadio;
+        document.getElementById('titulos').value = equipo.titulos;
+      } else {
+        alert('Equipo no encontrado para editar');
+      }
+    };
+
+    // Eliminar
+    const EliminarEquipo = async () => {
+      const id = document.getElementById('buscarId').value;
+      if (!id) {
+        alert('Por favor ingresa un ID para eliminar');
+        return;
+      }
+
+      const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este equipo?');
+      if (confirmDelete) {
+        await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+        alert('Equipo eliminado');
+        renderGrid();
+      }
+    };
+
+    // Mostrar Tabla
+    const renderGrid = async () => {
+      const data = await fetch(apiUrl).then(res => res.json());
+
+      new gridjs.Grid({
+        columns: ['ID', 'Nombre', 'Ciudad', 'Fundación', 'Colores', 'Estadio', 'Títulos'],
+        data: data.map(e => [e.id_equipo, e.nombre_equipo, e.ciudad, e.fundacion, e.colores, e.estadio, e.titulos]),
+        pagination: true,
+      }).render(document.getElementById('wrapper'));
+    };
+
+    // Agregar
+    document.getElementById('equipo-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('id_equipo').value;
+      const equipo = {
+        nombre_equipo: document.getElementById('nombre_equipo').value,
+        ciudad: document.getElementById('ciudad').value,
+        fundacion: document.getElementById('fundacion').value,
+        colores: document.getElementById('colores').value,
+        estadio: document.getElementById('estadio').value,
+        titulos: document.getElementById('titulos').value,
+      };
+
+      if (id) {
+        await fetch(`${apiUrl}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(equipo),
+        });
+      } else {
+        await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(equipo),
+        });
+      }
+
+      renderGrid();
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>
