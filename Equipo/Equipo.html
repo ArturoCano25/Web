@@ -36,8 +36,8 @@
     <button type="submit">Guardar</button>
     <button type="button" id="limpiar-btn">Limpiar Campos</button>
   </form>
-
   <div id="wrapper"></div>
+  <div id="pdfViewer"></div>
 
   <script>
     const apiUrl = 'http://localhost:3000/equipos';
@@ -58,7 +58,7 @@
       const equipo = await response.json();
 
       if (equipo) {
-        alert(`Equipo encontrado: \nId: ${equipo.id_equipo} \n Nombre: ${equipo.nombre_equipo}\n Ciudad: ${equipo.ciudad}\n Ano fundacion: ${equipo.fundacion}\n Colores: ${equipo.colores}\n Estadio: ${equipo.estadio} \n Titulos: ${equipo.titulos}`);
+        alert(`Equipo encontrado: \n Id: ${equipo.id_equipo} \n Nombre: ${equipo.nombre_equipo}\n Ciudad: ${equipo.ciudad}\n Ano fundacion: ${equipo.fundacion}\n Colores: ${equipo.colores}\n Estadio: ${equipo.estadio} \n Titulos: ${equipo.titulos}`);
         console.log(equipo);
       } else {
         alert('Equipo no encontrado');
@@ -139,13 +139,35 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(equipo),
-        });
-      }
+        });}
+
+        if (response.ok) {
+          try {
+            const blob = await response.blob(); // Obtener el PDF como blob
+
+            const pdfViewer = document.getElementById('pdfViewer');
+            pdfViewer.innerHTML = ''; // Limpiar visor previo
+
+            // Crear un objeto URL para el blob y mostrarlo en un iframe
+            const pdfURL = URL.createObjectURL(blob);
+            const iframe = document.createElement('iframe');
+            iframe.src = pdfURL;
+            iframe.width = '100%';
+            iframe.height = '500px';
+            pdfViewer.appendChild(iframe);
+            } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+            alert('Hubo un error al generar el PDF.');
+            }
+            } else {
+            alert('Error al generar el equipo.');
+            }
 
       renderGrid();
     });
 
     renderGrid();
+
   </script>
 </body>
 </html>
